@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jharkhand Societal Innovation Portal</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">J</div>
+          <div>
+            <h2>Jharkhand</h2>
+            <p>Innovation Portal</p>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-link active" data-target="dashboard">Dashboard</button>
+          <button class="nav-link" data-target="submit">Citizen Submission</button>
+          <button class="nav-link" data-target="challenges">Challenge Pipeline</button>
+          <button class="nav-link" data-target="universities">Universities</button>
+          <button class="nav-link" data-target="industry">Industry & Startups</button>
+          <button class="nav-link" data-target="notifications">Notifications</button>
+        </nav>
+
+        <div class="sidebar-card">
+          <h3>Prototype Highlights</h3>
+          <ul>
+            <li>AI-assisted classification</li>
+            <li>University routing</li>
+            <li>Industry collaboration</li>
+            <li>Analytics & impact</li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Smart India Hackathon Problem Statement</p>
+            <h1>Societal Innovation Collaboration Portal</h1>
+          </div>
+          <button class="primary-btn" id="seedDataBtn">Reset Demo Data</button>
+        </header>
+
+        <section id="dashboard" class="content-section active">
+          <div class="stats-grid" id="statsGrid"></div>
+
+          <div class="grid-two">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Challenge Distribution</h3>
+              </div>
+              <div id="domainBreakdown" class="bar-list"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>District Activity</h3>
+              </div>
+              <div id="districtBreakdown" class="bar-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="submit" class="content-section">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Citizen Challenge Submission</h3>
+            </div>
+
+            <form id="challengeForm" class="challenge-form">
+              <div class="form-grid">
+                <label>
+                  Challenge Title
+                  <input type="text" name="title" placeholder="e.g., Waterlogging in local market area" required />
+                </label>
+
+                <label>
+                  District
+                  <select name="district" required>
+                    <option value="Ranchi">Ranchi</option>
+                    <option value="Jamshedpur">Jamshedpur</option>
+                    <option value="Dhanbad">Dhanbad</option>
+                    <option value="Hazaribagh">Hazaribagh</option>
+                    <option value="Giridih">Giridih</option>
+                    <option value="Bokaro">Bokaro</option>
+                    <option value="Deoghar">Deoghar</option>
+                  </select>
+                </label>
+
+                <label>
+                  Primary Domain
+                  <select name="domain" required>
+                    <option value="Education">Education</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Water">Water Management</option>
+                    <option value="Sanitation">Sanitation</option>
+                    <option value="Environment">Environment</option>
+                    <option value="Urban Infrastructure">Urban Infrastructure</option>
+                    <option value="Accessibility">Accessibility</option>
+                    <option value="Livelihoods">Rural Livelihoods</option>
+                    <option value="Public Services">Public Services</option>
+                  </select>
+                </label>
+
+                <label>
+                  Severity
+                  <select name="severity" required>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </label>
+              </div>
+
+              <label>
+                Problem Description
+                <textarea name="description" rows="4" placeholder="Describe the issue, impact, population affected, and any constraints." required></textarea>
+              </label>
+
+              <label>
+                Geo / Locality Details
+                <input type="text" name="location" placeholder="Village / ward / GPS location / landmark" required />
+              </label>
+
+              <label>
+                Supporting Documents or Evidence
+                <input type="text" name="evidence" placeholder="Add photo/video/document references (optional)" />
+              </label>
+
+              <div class="form-footer">
+                <button type="submit" class="primary-btn">Submit Challenge</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section id="challenges" class="content-section">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Challenge Pipeline</h3>
+            </div>
+            <div id="challengeList" class="challenge-list"></div>
+          </div>
+        </section>
+
+        <section id="universities" class="content-section">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>University Collaboration</h3>
+            </div>
+            <div id="universityGrid" class="cards-grid"></div>
+          </div>
+        </section>
+
+        <section id="industry" class="content-section">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Industry and Startup Partnerships</h3>
+            </div>
+            <div id="industryGrid" class="cards-grid"></div>
+          </div>
+        </section>
+
+        <section id="notifications" class="content-section">
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Notifications and Communication</h3>
+            </div>
+            <div id="notificationList" class="notification-list"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
