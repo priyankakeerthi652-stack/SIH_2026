@@ -107,7 +107,10 @@ const notifications = [
 ];
 
 const state = {
-  challenges: [...initialChallenges]
+  challenges: [...initialChallenges],
+  universityData: [...universityData],
+  industryData: [...industryData],
+  notifications: [...notifications]
 };
 
 function formatDomain(domain) {
@@ -217,7 +220,7 @@ function renderChallenges() {
 function renderUniversities() {
   const container = document.getElementById('universityGrid');
 
-  container.innerHTML = universityData.map(item => `
+  container.innerHTML = state.universityData.map(item => `
     <div class="card">
       <h4>${item.name}</h4>
       <p><strong>Focus:</strong> ${item.focus}</p>
@@ -231,7 +234,7 @@ function renderUniversities() {
 function renderIndustry() {
   const container = document.getElementById('industryGrid');
 
-  container.innerHTML = industryData.map(item => `
+  container.innerHTML = state.industryData.map(item => `
     <div class="card">
       <h4>${item.name}</h4>
       <p><strong>Type:</strong> ${item.type}</p>
@@ -244,7 +247,7 @@ function renderIndustry() {
 function renderNotifications() {
   const container = document.getElementById('notificationList');
 
-  container.innerHTML = notifications.map(item => `
+  container.innerHTML = state.notifications.map(item => `
     <div class="notification-item">
       <h4>${item.title}</h4>
       <p>${item.detail}</p>
@@ -261,35 +264,72 @@ function renderAll() {
   renderNotifications();
 }
 
+async function loadDashboardData() {
+  try {
+    const response = await fetch('/api/challenges');
+
+    if (!response.ok) {
+      throw new Error('Failed to load challenges from backend');
+    }
+
+    const data = await response.json();
+    state.challenges = data.challenges;
+    state.universityData = data.universityData;
+    state.industryData = data.industryData;
+    state.notifications = data.notifications;
+    renderAll();
+  } catch (error) {
+    console.error(error);
+    state.challenges = [...initialChallenges];
+    state.universityData = [...universityData];
+    state.industryData = [...industryData];
+    state.notifications = [...notifications];
+    renderAll();
+  }
+}
+
 function seedDefaultData() {
   state.challenges = [...initialChallenges];
+  state.universityData = [...universityData];
+  state.industryData = [...industryData];
+  state.notifications = [...notifications];
   renderAll();
 }
 
-function handleSubmit(event) {
+async function handleSubmit(event) {
   event.preventDefault();
   const formData = new FormData(event.target);
   const newChallenge = {
-    id: Date.now(),
     title: formData.get('title'),
     district: formData.get('district'),
     domain: formData.get('domain'),
     severity: formData.get('severity'),
     description: formData.get('description'),
     location: formData.get('location'),
-    evidence: formData.get('evidence') || 'No supporting documents provided',
-    submittedBy: 'Citizen / Community Member',
-    university: 'Auto-routing to best-matched institution',
-    status: 'Submitted for Review',
-    industry: 'Open for partnership matching',
-    progress: 12,
-    aiLabel: `AI classified as ${formData.get('domain')} with priority ${formData.get('severity')}`
+    evidence: formData.get('evidence') || 'No supporting documents provided'
   };
 
-  state.challenges.unshift(newChallenge);
-  renderAll();
-  event.target.reset();
-  document.querySelector('[data-target="challenges"]').click();
+  try {
+    const response = await fetch('/api/challenges', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newChallenge)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to submit challenge');
+    }
+
+    event.target.reset();
+    await loadDashboardData();
+    document.querySelector('[data-target="challenges"]').click();
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 function setupNavigation() {
@@ -305,9 +345,9 @@ function setupNavigation() {
   });
 }
 
-function initialize() {
+async function initialize() {
   setupNavigation();
-  renderAll();
+  await loadDashboardData();
   document.getElementById('challengeForm').addEventListener('submit', handleSubmit);
   document.getElementById('seedDataBtn').addEventListener('click', seedDefaultData);
 }
